@@ -26,7 +26,7 @@ public class Clogin {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                JOptionPane.showMessageDialog(null, "El usuario es correcto");
+                //JOptionPane.showMessageDialog(null, "El usuario es correcto");
                 loginFrame.dispose(); // << cerrar ventana de login
                 FormContacto objetoContacto = new FormContacto();
                 objetoContacto.setVisible(true);

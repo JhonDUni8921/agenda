@@ -10,72 +10,73 @@ import javax.swing.table.DefaultTableModel;
 
 public class FormContacto extends JFrame {
 
-    JTextField txtId, txtNombre, txtTelefono, txtEmail, txtDireccion;
+    JTextField txtNombre, txtTelefono, txtEmail, txtDireccion;
     JTable tablaContactos;
     DefaultTableModel modelo;
     JButton btnAgregar, btnEditar, btnEliminar, btnLimpiar;
 
     public FormContacto() {
         setTitle("Agenda de Contactos");
-        setSize(900, 500);
+        setSize(950, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(10, 10));
-        getContentPane().setBackground(new Color(240, 248, 255));
 
-        Font font = new Font("Segoe UI", Font.PLAIN, 16);
-        Border padding = new EmptyBorder(10, 10, 10, 10);
+        JPanelConFondo fondo = new JPanelConFondo("/Images/AgendaImage.png");
+        fondo.setLayout(new BorderLayout(15, 15));
+        setContentPane(fondo);
 
-        JPanel panelCampos = new JPanel(new GridLayout(5, 2, 10, 10));
+        Font fontLabel = new Font("Segoe UI", Font.BOLD, 16);
+        Font fontField = new Font("Segoe UI", Font.PLAIN, 16);
+        Border padding = new EmptyBorder(20, 20, 20, 20);
+
+        JPanel panelCampos = new JPanel(new GridLayout(4, 2, 15, 15));
         panelCampos.setBorder(padding);
-        panelCampos.setBackground(new Color(240, 248, 255));
+        panelCampos.setOpaque(false);
 
-        txtId = new JTextField(); txtId.setEditable(false);
-        txtNombre = new JTextField();
-        txtTelefono = new JTextField();
-        txtEmail = new JTextField();
-        txtDireccion = new JTextField();
+        txtNombre = crearCampoTexto();
+        txtTelefono = crearCampoTexto();
+        txtEmail = crearCampoTexto();
+        txtDireccion = crearCampoTexto();
 
         JLabel[] labels = {
-            new JLabel("ID:"), new JLabel("Nombre:"),
-            new JLabel("Teléfono:"), new JLabel("Email:"),
-            new JLabel("Dirección:")
+            crearLabel("Nombre:"), crearLabel("Teléfono:"),
+            crearLabel("Email:"), crearLabel("Dirección:")
         };
 
-        JTextField[] fields = { txtId, txtNombre, txtTelefono, txtEmail, txtDireccion };
+        JTextField[] fields = { txtNombre, txtTelefono, txtEmail, txtDireccion };
 
         for (int i = 0; i < labels.length; i++) {
-            labels[i].setFont(font);
             panelCampos.add(labels[i]);
-            fields[i].setFont(font);
             panelCampos.add(fields[i]);
         }
 
         add(panelCampos, BorderLayout.NORTH);
 
-        modelo = new DefaultTableModel(new String[]{"ID", "Nombre", "Teléfono", "Email", "Dirección"}, 0);
+        modelo = new DefaultTableModel(new String[]{"Nombre", "Teléfono", "Email", "Dirección"}, 0);
         tablaContactos = new JTable(modelo);
-        tablaContactos.setFont(font);
-        tablaContactos.setRowHeight(24);
+        tablaContactos.setFont(fontField);
+        tablaContactos.setRowHeight(26);
+        tablaContactos.setShowGrid(false);
+        tablaContactos.setIntercellSpacing(new Dimension(0, 0));
+        tablaContactos.setSelectionBackground(new Color(173, 216, 230));
+        tablaContactos.setSelectionForeground(Color.BLACK);
         tablaContactos.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        tablaContactos.getTableHeader().setBackground(new Color(100, 149, 237));
+        tablaContactos.getTableHeader().setForeground(Color.WHITE);
         JScrollPane scroll = new JScrollPane(tablaContactos);
         scroll.setBorder(padding);
         add(scroll, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelBotones.setBackground(new Color(224, 255, 255));
+        panelBotones.setOpaque(false);
 
-        btnAgregar = new JButton("Agregar");
-        btnEditar = new JButton("Editar");
-        btnEliminar = new JButton("Eliminar");
-        btnLimpiar = new JButton("Limpiar");
+        btnAgregar = crearBoton("Agregar", new Color(46, 204, 113));
+        btnEditar = crearBoton("Editar", new Color(241, 196, 15));
+        btnEliminar = crearBoton("Eliminar", new Color(231, 76, 60));
+        btnLimpiar = crearBoton("Limpiar", new Color(52, 152, 219));
 
         JButton[] botones = { btnAgregar, btnEditar, btnEliminar, btnLimpiar };
         for (JButton btn : botones) {
-            btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-            btn.setBackground(new Color(70, 130, 180));
-            btn.setForeground(Color.WHITE);
-            btn.setFocusPainted(false);
             panelBotones.add(btn);
         }
 
@@ -86,11 +87,10 @@ public class FormContacto extends JFrame {
         tablaContactos.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int fila = tablaContactos.getSelectedRow();
-                txtId.setText(tablaContactos.getValueAt(fila, 0).toString());
-                txtNombre.setText(tablaContactos.getValueAt(fila, 1).toString());
-                txtTelefono.setText(tablaContactos.getValueAt(fila, 2).toString());
-                txtEmail.setText(tablaContactos.getValueAt(fila, 3).toString());
-                txtDireccion.setText(tablaContactos.getValueAt(fila, 4).toString());
+                txtNombre.setText(tablaContactos.getValueAt(fila, 0).toString());
+                txtTelefono.setText(tablaContactos.getValueAt(fila, 1).toString());
+                txtEmail.setText(tablaContactos.getValueAt(fila, 2).toString());
+                txtDireccion.setText(tablaContactos.getValueAt(fila, 3).toString());
             }
         });
 
@@ -102,16 +102,43 @@ public class FormContacto extends JFrame {
         setVisible(true);
     }
 
+    private JLabel crearLabel(String texto) {
+        JLabel lbl = new JLabel(texto);
+        lbl.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lbl.setForeground(new Color(33, 33, 33));
+        return lbl;
+    }
+
+    private JTextField crearCampoTexto() {
+        JTextField campo = new JTextField();
+        campo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        campo.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(189, 195, 199), 1),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        return campo;
+    }
+
+    private JButton crearBoton(String texto, Color color) {
+        JButton boton = new JButton(texto);
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.setBackground(color);
+        boton.setForeground(Color.WHITE);
+        boton.setFocusPainted(false);
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        return boton;
+    }
+
     void listarContactos() {
         modelo.setRowCount(0);
         try {
             Cconexion con = new Cconexion();
             Connection conn = con.conectarbase();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM agenda");
+            ResultSet rs = stmt.executeQuery("SELECT nombre, telefono, email, direccion FROM agenda");
             while (rs.next()) {
                 modelo.addRow(new Object[]{
-                    rs.getInt("id"),
                     rs.getString("nombre"),
                     rs.getString("telefono"),
                     rs.getString("email"),
@@ -144,52 +171,53 @@ public class FormContacto extends JFrame {
     }
 
     void editarContacto() {
-        if (txtId.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un contacto.");
-            return;
-        }
-
         if (!validarCampos()) return;
 
         try {
             Cconexion con = new Cconexion();
             Connection conn = con.conectarbase();
-            PreparedStatement ps = conn.prepareStatement("UPDATE agenda SET nombre=?, telefono=?, email=?, direccion=? WHERE id=?");
-            ps.setString(1, txtNombre.getText().trim());
-            ps.setString(2, txtTelefono.getText().trim());
-            ps.setString(3, txtEmail.getText().trim());
-            ps.setString(4, txtDireccion.getText().trim());
-            ps.setInt(5, Integer.parseInt(txtId.getText()));
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Contacto editado.");
-            limpiarCampos();
-            listarContactos();
+            PreparedStatement ps = conn.prepareStatement("UPDATE agenda SET telefono=?, email=?, direccion=? WHERE nombre=?");
+            ps.setString(1, txtTelefono.getText().trim());
+            ps.setString(2, txtEmail.getText().trim());
+            ps.setString(3, txtDireccion.getText().trim());
+            ps.setString(4, txtNombre.getText().trim());
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                JOptionPane.showMessageDialog(this, "Contacto editado.");
+                limpiarCampos();
+                listarContactos();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el contacto.");
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al editar: " + e);
         }
     }
 
     void eliminarContacto() {
-        if (txtId.getText().isEmpty()) {
+        if (txtNombre.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un contacto.");
             return;
         }
         try {
             Cconexion con = new Cconexion();
             Connection conn = con.conectarbase();
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM agenda WHERE id=?");
-            ps.setInt(1, Integer.parseInt(txtId.getText()));
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Contacto eliminado.");
-            limpiarCampos();
-            listarContactos();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM agenda WHERE nombre=?");
+            ps.setString(1, txtNombre.getText().trim());
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                JOptionPane.showMessageDialog(this, "Contacto eliminado.");
+                limpiarCampos();
+                listarContactos();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el contacto.");
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al eliminar: " + e);
         }
     }
 
     void limpiarCampos() {
-        txtId.setText("");
         txtNombre.setText("");
         txtTelefono.setText("");
         txtEmail.setText("");
@@ -211,5 +239,25 @@ public class FormContacto extends JFrame {
         }
 
         return true;
+    }
+
+    class JPanelConFondo extends JPanel {
+        private Image imagen;
+
+        public JPanelConFondo(String ruta) {
+            try {
+                imagen = new ImageIcon(getClass().getResource(ruta)).getImage();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "No se pudo cargar la imagen de fondo: " + e);
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (imagen != null) {
+                g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 }

@@ -5,4 +5,5 @@ Clases\Contacto.class
 Clases\ContactoDAO.class
 com\mycompany\AgendaProyect\FormContacto.class
 Clases\Cconexion.class
+com\mycompany\AgendaProyect\FormContacto$JPanelConFondo.class
 com\mycompany\AgendaProyect\FormContacto$1.class

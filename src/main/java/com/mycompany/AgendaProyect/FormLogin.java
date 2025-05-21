@@ -12,18 +12,20 @@ public class FormLogin extends JFrame {
     private JLabel imageLabel;
 
     public FormLogin() {
-        setTitle("Login");
-        setSize(600, 450);
+        setTitle("Login Agenda");
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        imageLabel = new JLabel(new ImageIcon("path_to_image.png"));
+       imageLabel = new JLabel(new ImageIcon(getClass().getResource("/Images/AgendaImage.png")));
+
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        userTextField = new JTextField(20);
-        passwordField = new JPasswordField(20);
+
+        userTextField = new JTextField(90);
+        passwordField = new JPasswordField(90);
         loginButton = new JButton("Ingresar");
 
         userTextField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
